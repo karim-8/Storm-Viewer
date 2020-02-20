@@ -21,6 +21,7 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        //computed property
         var imageCombinedName: String {
             if (imagePostion != 0) && (imagesCount != 0) {
                 return "Number \(imagePostion) of \(imagesCount)"
@@ -28,6 +29,8 @@ class DetailsViewController: UIViewController {
                 return "No data"
             }
         }
+        
+        
         title = imageCombinedName
         navigationItem.largeTitleDisplayMode = .never
         
@@ -35,9 +38,17 @@ class DetailsViewController: UIViewController {
         if let image = selectedImage {
             imageView.image = UIImage(named: image)
         }
+        
+        //adding share button in navbar
+        navigationItem.rightBarButtonItem =
+            UIBarButtonItem(
+                barButtonSystemItem: .action, target: self,
+                action: #selector(shareBtnTapped))
 
     }
 }
+
+
 
 extension DetailsViewController {
     
@@ -49,5 +60,15 @@ extension DetailsViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnTap = false
+    }
+    
+    //ShareButton
+    @objc func shareBtnTapped () {
+        let vc = UIActivityViewController(activityItems: [],
+                                          applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem =
+            navigationItem.rightBarButtonItem
+        present(vc,animated: true)
+        
     }
 }
